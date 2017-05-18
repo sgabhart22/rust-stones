@@ -13,8 +13,10 @@ struct Vec2f {
     y: f64
 }
 
+const CELL_DIMS: f64 =  65.0;
+
 fn main() {
-    let title = "First stones run";
+    let title = "Stones beta!!";
     let window_size = Size {
         height: 700,
         width: 800,
@@ -33,11 +35,11 @@ fn main() {
                             .unwrap();
 
     let line = line::Line::new(color::BLACK, 0.5);
-    let _grid = grid::Grid{ cols: 10, rows: 10, units: 65.0};
+    let _grid = grid::Grid{ cols: 10, rows: 10, units: CELL_DIMS};
 
     while let Some(e) = window.next() {
         window.draw_2d(&e, |c, g| {
-            clear([0.7214, 0.0, 0.6667, 0.8], g);
+            clear([0.1255, 0.6980, 0.6667, 0.7], g);
             let center = c.transform.trans(0.0, 0.0);
 
             _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
@@ -59,13 +61,13 @@ fn main() {
             let mut accumulated_width = 0.0f64;
 
             for i in 1..10 {
-                accumulated_width += 65.0;
+                accumulated_width += CELL_DIMS;
                 if accumulated_width >= point.x { break };
                 col += 1;
             }
 
             for j in 1..10 {
-                accumulated_height += 65.0;
+                accumulated_height += CELL_DIMS;
                 if accumulated_height >= point.y { break };
                 row += 1;
             }
