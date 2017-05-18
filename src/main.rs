@@ -51,6 +51,26 @@ fn main() {
         if let Some(Button::Mouse(button)) = e.press_args() {
             println!("Pressed mouse button '{:?}'", button);
             println!("At coordinates {} {}", mouse_coords.x, mouse_coords.y);
+
+            let point = Vec2f{ x:mouse_coords.x, y:mouse_coords.y };
+            let mut row = 0u8;
+            let mut col = 0u8;
+            let mut accumulated_height = 0.0f64;
+            let mut accumulated_width = 0.0f64;
+
+            for i in 1..10 {
+                accumulated_width += 65.0;
+                if accumulated_width >= point.x { break };
+                col += 1;
+            }
+
+            for j in 1..10 {
+                accumulated_height += 65.0;
+                if accumulated_height >= point.y { break };
+                row += 1;
+            }
+
+            println!("Located in cell {}, {}", row, col);
         }
 
         if let Some(args) = e.mouse_cursor_args() {
