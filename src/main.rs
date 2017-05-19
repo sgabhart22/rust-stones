@@ -45,11 +45,6 @@ fn main() {
             _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
         });
 
-        e.mouse_cursor(|x, y| {
-            let cursor = [x, y];
-            println!("Mouse moved '{} {}'", cursor[0], cursor[1]);
-        });
-
         if let Some(Button::Mouse(button)) = e.press_args() {
             println!("Pressed mouse button '{:?}'", button);
             println!("At coordinates {} {}", mouse_coords.x, mouse_coords.y);
@@ -60,19 +55,24 @@ fn main() {
             let mut accumulated_height = 0.0f64;
             let mut accumulated_width = 0.0f64;
 
-            for i in 1..10 {
-                accumulated_width += CELL_DIMS;
-                if accumulated_width >= point.x { break };
-                col += 1;
+            if point.x > 650.0 || point.y > 650.0 {
+                println!("Located outside grid");
             }
+            else {
+                for i in 1..10 {
+                    accumulated_width += CELL_DIMS;
+                    if accumulated_width >= point.x { break };
+                    col += 1;
+                }
 
-            for j in 1..10 {
-                accumulated_height += CELL_DIMS;
-                if accumulated_height >= point.y { break };
-                row += 1;
+                for j in 1..10 {
+                    accumulated_height += CELL_DIMS;
+                    if accumulated_height >= point.y { break };
+                    row += 1;
+                }
+
+                println!("Located in cell {}, {}", row, col);
             }
-
-            println!("Located in cell {}, {}", row, col);
         }
 
         if let Some(args) = e.mouse_cursor_args() {
