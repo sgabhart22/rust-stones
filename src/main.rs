@@ -6,7 +6,7 @@ extern crate graphics;
 use piston_window::{OpenGL, PistonWindow, Size, WindowSettings, clear};
 use opengl_graphics::GlGraphics;
 use piston::input::*;
-use graphics::{line, grid, color, Transformed};
+use graphics::{color, Transformed};
 
 mod app;
 mod board;
@@ -21,7 +21,6 @@ fn main() {
 
     let opengl = OpenGL::V2_1;
 
-    let mut app = app::App::new();
     let mut window: PistonWindow =
         WindowSettings::new(title,
                             [window_size.width, window_size.height])
@@ -30,16 +29,13 @@ fn main() {
                             .build()
                             .unwrap();
 
-    let line = line::Line::new(color::BLACK, 0.5);
-    let _grid = grid::Grid{ cols: 10, rows: 10, units: settings::CELL_DIMS};
+    let mut app = app::App::new();
+    let ref mut gl = GlGraphics::new(opengl);
 
     while let Some(e) = window.next() {
-        window.draw_2d(&e, |c, g| {
-            clear([0.1255, 0.6980, 0.6667, 0.7], g);
-            let center = c.transform.trans(0.0, 0.0);
-
-            _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
-        });
+        if let Some(args) = e.render_args() {
+            app.on_render(&args, gl);
+        }
 
         if let Some(button) = e.press_args() {
             app.on_button_press(&button);
