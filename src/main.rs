@@ -16,7 +16,7 @@ struct Vec2f {
 const CELL_DIMS: f64 =  65.0;
 
 fn main() {
-    let title = "Stones beta!!";
+    let title = "Stones, ma dudes";
     let window_size = Size {
         height: 700,
         width: 800,
