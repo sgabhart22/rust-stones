@@ -58,8 +58,11 @@ impl Board {
 
             println!("Located in cell {}, {}", row, col);
 
-            self.cells[row as usize][col as usize] = Cell{ cell_color: Some([1.0, 1.0, 1.0, 0.8]),
-                                                           pos: true};
+            let mut target: Cell = self.cells[row as usize][col as usize];
+        }
+
+        fn toggle_cell(c: Cell) {
+
         }
     }
 }
