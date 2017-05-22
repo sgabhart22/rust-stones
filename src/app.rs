@@ -1,6 +1,6 @@
-extern crate piston;
-
+use opengl_graphics::GlGraphics;
 use piston::input::*;
+use graphics::{line, grid, color, Transformed};
 
 use board;
 use settings;
@@ -25,6 +25,21 @@ impl App {
         }
     }
 
+    pub fn on_render(&mut self, args: &RenderArgs,
+                     gl: &mut GlGraphics) {
+        gl.draw(args.viewport(), |c, g| {
+        use graphics::*;
+
+        clear([0.1255, 0.6980, 0.6667, 0.7], g);
+        let center = c.transform.trans(0.0, 0.0);
+
+        let line = line::Line::new(color::BLACK, 0.5);
+        let _grid = grid::Grid{ cols: 10, rows: 10, units: settings::CELL_DIMS};
+
+        _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
+        });
+    }
+
     pub fn on_button_press(&mut self, button: &Button) {
         match button {
             &Button::Keyboard(key) => {
@@ -41,30 +56,8 @@ impl App {
         println!("Pressed mouse button '{:?}'", button);
         println!("At coordinates {} {}", self.mouse_coords.x, self.mouse_coords.y);
 
-        let point = Vec2f{ x: self.mouse_coords.x, y: self.mouse_coords.y };
-        let mut row = 0u8;
-        let mut col = 0u8;
-        let mut accumulated_height = 0.0f64;
-        let mut accumulated_width = 0.0f64;
-
-        if point.x > 650.0 || point.y > 650.0 {
-            println!("Located outside grid");
-        }
-        else {
-            for i in 1..10 {
-                accumulated_width += settings::CELL_DIMS;
-                if accumulated_width >= point.x { break };
-                col += 1;
-            }
-
-            for j in 1..10 {
-                accumulated_height += settings::CELL_DIMS;
-                if accumulated_height >= point.y { break };
-                row += 1;
-            }
-
-            println!("Located in cell {}, {}", row, col);
-        }
+        let ref point = Vec2f{ x: self.mouse_coords.x, y: self.mouse_coords.y };
+        self.board.on_clicked_cell(point.x, point.y);
     }
 
     pub fn on_mouse_move(&mut self, args: &[f64; 2]) {
