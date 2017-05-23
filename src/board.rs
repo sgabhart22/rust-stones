@@ -25,6 +25,17 @@ impl Cell {
     pub fn cell_status(&mut self) {
         println!("Color, pos {:?} {}", self.cell_color, self.pos);
     }
+
+    pub fn toggle_cell(&mut self) {
+        if self.cell_color.is_none() {
+            self.cell_color = Some([1.0, 1.0, 1.0, 0.8]);
+        } else {
+            self.cell_color = None;
+        }
+
+        if !self.pos { self.pos = true; }
+        else { self.pos = false; }
+    }
 }
 
 #[derive(Copy, Clone)]
@@ -69,19 +80,7 @@ impl Board {
             println!("Located in cell {}, {}", row, col);
 
             let target: &mut Cell = self.get_cell(row, col);
-
-            if target.cell_color.is_none() {
-                target.cell_color = Some([1.0, 1.0, 1.0, 0.8]);
-            } else {
-                target.cell_color = None;
-            }
-
-            if !target.pos {
-                target.pos = true;
-            } else {
-                target.pos = false;
-            }
-
+            target.toggle_cell();
             target.cell_status();
         }
     }
