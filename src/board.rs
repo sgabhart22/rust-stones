@@ -17,8 +17,14 @@ pub struct Vec2f {
 
 #[derive(Copy, Clone)]
 pub struct Cell {
-    cell_color: Option<Color>,
-    pos: bool
+    pub cell_color: Option<Color>,
+    pub pos: bool
+}
+
+impl Cell {
+    pub fn cell_status(&mut self) {
+        println!("Color, pos {:?} {}", self.cell_color, self.pos);
+    }
 }
 
 #[derive(Copy, Clone)]
@@ -30,6 +36,10 @@ impl Board {
     pub fn new() -> Board {
         let mut board = Board{ cells: [[Cell{ cell_color: None, pos: false }; 10]; 10]};
         board
+    }
+
+    pub fn get_cell(&mut self, x: u8, y: u8) -> &mut Cell {
+        &mut self.cells[y as usize][x as usize]
     }
 
     pub fn on_clicked_cell(&mut self, x_comp: f64, y_comp: f64) {
@@ -58,11 +68,21 @@ impl Board {
 
             println!("Located in cell {}, {}", row, col);
 
-            let mut target: Cell = self.cells[row as usize][col as usize];
-        }
+            let target: &mut Cell = self.get_cell(row, col);
 
-        fn toggle_cell(c: Cell) {
+            if target.cell_color.is_none() {
+                target.cell_color = Some([1.0, 1.0, 1.0, 0.8]);
+            } else {
+                target.cell_color = None;
+            }
 
+            if !target.pos {
+                target.pos = true;
+            } else {
+                target.pos = false;
+            }
+
+            target.cell_status();
         }
     }
 }
