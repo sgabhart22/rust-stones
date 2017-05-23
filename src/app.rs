@@ -1,6 +1,6 @@
 use opengl_graphics::GlGraphics;
 use piston::input::*;
-use graphics::{line, grid, color, Transformed};
+use graphics::{line, grid, color, Transformed, Rectangle};
 
 use board;
 use settings;
@@ -37,6 +37,19 @@ impl App {
         let _grid = grid::Grid{ cols: 10, rows: 10, units: settings::CELL_DIMS};
 
         _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
+
+        for x in 0..10 {
+            for y in 0..10 {
+                let ref current = self.board.get_cell(y, x);
+                if current.pos == true {
+                    let rect = Rectangle::new(current.cell_color.unwrap());
+                    let dims = rectangle::square(x as f64 * settings::CELL_DIMS,
+                                                 y as f64 * settings::CELL_DIMS,
+                                                 settings::CELL_DIMS - 1.0);
+                    rect.draw(dims, &c.draw_state, c.transform, g);
+                }
+            }
+        }
         });
     }
 
