@@ -1,6 +1,9 @@
-use opengl_graphics::GlGraphics;
+extern crate find_folder;
+
+use opengl_graphics::{GlGraphics, Texture};
 use piston::input::*;
-use graphics::{line, grid, color, Transformed, Rectangle};
+use piston_window::*;
+use graphics::{line, grid, color, Transformed, Rectangle, Image};
 
 use board;
 use settings;
@@ -27,16 +30,16 @@ impl App {
 
     pub fn on_render(&mut self, args: &RenderArgs,
                      gl: &mut GlGraphics) {
-        gl.draw(args.viewport(), |c, g| {
+        gl.draw(args.viewport(), |c, gl| {
         use graphics::*;
 
-        clear([0.1255, 0.6980, 0.6667, 0.7], g);
+        clear([0.1255, 0.6980, 0.6667, 1.0], gl);
         let center = c.transform.trans(0.0, 0.0);
 
         let line = line::Line::new(color::BLACK, 0.5);
         let _grid = grid::Grid{ cols: 10, rows: 10, units: settings::CELL_DIMS};
 
-        _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), g);
+        _grid.draw(&line, &c.draw_state, center.trans(0.0, 0.0), gl);
 
         for x in 0..10 {
             for y in 0..10 {
@@ -46,7 +49,7 @@ impl App {
                     let dims = rectangle::square(x as f64 * settings::CELL_DIMS,
                                                  y as f64 * settings::CELL_DIMS,
                                                  settings::CELL_DIMS - 1.0);
-                    rect.draw(dims, &c.draw_state, c.transform, g);
+                    rect.draw(dims, &c.draw_state, c.transform, gl);
                 }
             }
         }
