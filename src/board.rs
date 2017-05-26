@@ -1,10 +1,8 @@
-extern crate graphics;
-
 use graphics::types::Color;
-use graphics::color;
 
 use settings;
 
+#[allow(dead_code)]
 pub struct Coords {
     pub x: u8,
     pub y: u8
@@ -23,7 +21,7 @@ pub struct Cell {
 
 impl Cell {
     pub fn cell_status(&mut self) {
-        println!("Color, pos {:?} {}", self.cell_color, self.pos);
+        println!("Image, pos {:?} {}", self.cell_color, self.pos);
     }
 
     pub fn toggle_cell(&mut self) {
@@ -45,7 +43,7 @@ pub struct Board {
 
 impl Board {
     pub fn new() -> Board {
-        let mut board = Board{ cells: [[Cell{ cell_color: None, pos: false }; 10]; 10]};
+        let board = Board{ cells: [[Cell{ cell_color: None, pos: false }; 10]; 10]};
         board
     }
 
@@ -65,13 +63,13 @@ impl Board {
             return
         }
         else {
-            for i in 1..10 {
+            for _ in 1..10 {
                 accumulated_width += settings::CELL_DIMS;
                 if accumulated_width >= point.x { break };
                 col += 1;
             }
 
-            for j in 1..10 {
+            for _ in 1..10 {
                 accumulated_height += settings::CELL_DIMS;
                 if accumulated_height >= point.y { break };
                 row += 1;
