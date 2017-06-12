@@ -4,6 +4,7 @@ use opengl_graphics::{GlGraphics, Texture};
 use piston::input::*;
 use piston_window::*;
 use graphics::{line, grid, color, Transformed, Rectangle, Image};
+use std::path::Path;
 
 use board;
 use settings;
@@ -35,6 +36,11 @@ impl App {
 
         clear([0.1255, 0.6980, 0.6667, 1.0], gl);
         let center = c.transform.trans(0.0, 0.0);
+
+        let bg_image = Image::new().rect([0.0, 0.0, 800.0, 700.0]);
+        let bg_texture = Texture::from_path(Path::new("assets/bg.png")).unwrap();
+
+        bg_image.draw(&bg_texture, &c.draw_state, c.transform, gl);
 
         let line = line::Line::new(color::BLACK, 0.5);
         let _grid = grid::Grid{ cols: 10, rows: 10, units: settings::CELL_DIMS};
